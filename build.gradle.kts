@@ -34,6 +34,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	testImplementation("org.springframework.boot:spring-boot-starter-security-test")
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+	implementation("org.springframework.boot:spring-boot-starter-mail")
+	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+	testImplementation("org.springframework.boot:spring-boot-starter-thymeleaf-test")
 }
 
 tasks.withType<Test> {

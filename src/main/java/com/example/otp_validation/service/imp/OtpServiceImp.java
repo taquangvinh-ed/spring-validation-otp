@@ -2,7 +2,9 @@ package com.example.otp_validation.service.imp;
 
 import com.example.otp_validation.constant.AppContants;
 import com.example.otp_validation.dto.OtpResponse;
+import com.example.otp_validation.service.EmailService;
 import com.example.otp_validation.service.OtpService;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,9 +20,10 @@ public class OtpServiceImp implements OtpService {
 
     private final PasswordEncoder passwordEncoder;
     private final RedisTemplate redisTemplate;
+    private final EmailService emailService;
 
     @Override
-    public String generateOtp(String email) {
+    public String generateOtp(String email) throws MessagingException {
 
         Integer otp = ThreadLocalRandom.current().nextInt(100000, 999999);
 
@@ -31,6 +34,8 @@ public class OtpServiceImp implements OtpService {
         redisTemplate.opsForValue().set(otpKey, hashedOtp, AppContants.OTP_TTL_SECONDS, TimeUnit.SECONDS);
 
         redisTemplate.delete(AppContants.RETRY_PREFIX+email.toLowerCase());
+
+        emailService.sendHtmlOtp(email, otp.toString());
         return otp.toString();
     }
 

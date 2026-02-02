@@ -4,6 +4,7 @@ import com.example.otp_validation.dto.OtpRequest;
 import com.example.otp_validation.dto.OtpResponse;
 import com.example.otp_validation.dto.VerifyOtpRequest;
 import com.example.otp_validation.service.OtpService;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -18,7 +19,7 @@ public class OtpController {
     private  final OtpService otpService;
 
     @PostMapping("/generate")
-    ResponseEntity<String> generateOtp(@Valid @RequestBody OtpRequest request){
+    ResponseEntity<String> generateOtp(@Valid @RequestBody OtpRequest request) throws MessagingException {
 
         String result = otpService.generateOtp(request.getEmail());
 
